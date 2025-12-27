@@ -396,11 +396,7 @@ zend_module_entry winbinder_module_entry = {
 	ZEND_MSHUTDOWN(winbinder),
 	NULL, NULL,
 	ZEND_MINFO(winbinder),
-#if PHP_VERSION_ID < 80300
 	LIBVERSION,
-#else
-	NULL,
-#endif
 	STANDARD_MODULE_PROPERTIES};
 
 //-------------------------------------------------------- ZEND MODULE FUNCTIONS
@@ -409,10 +405,6 @@ zend_module_entry winbinder_module_entry = {
 
 ZEND_MINIT_FUNCTION(winbinder)
 {
-#if PHP_VERSION_ID >= 80300
-	winbinder_module_entry.module_version = zend_string_init(LIBVERSION, sizeof(LIBVERSION) - 1, 1);
-#endif
-
 	REGISTER_INI_ENTRIES();
 
 	// Module initialization procedure
@@ -633,10 +625,6 @@ ZEND_MSHUTDOWN_FUNCTION(winbinder)
 {
 
 	UNREGISTER_INI_ENTRIES();
-
-#if PHP_VERSION_ID >= 80300
-	zend_string_release(winbinder_module_entry.module_version);
-#endif
 
 	// End procedure
 	wbEnd();
