@@ -4,4 +4,4 @@ Welcome to Winbinder's documentation!
 ===================================
 
 **Winbinder** 
-`Full documentation here <https://github.com/crispy-computing-machine/Winbinder-Docs>`_
+`Full documentation here <https://crispy-computing-machine.github.io/Winbinder-Docs/>`_

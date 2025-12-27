@@ -3,7 +3,7 @@ WinBinder
 
 WinBinder - The native Windows binding for PHP 8.
 
-[![Build status](https://ci.appveyor.com/api/projects/status/github/crispy-computing-machine/Winbinder?svg=true&branch=php8)](https://ci.appveyor.com/api/projects/status/github/crispy-computing-machine/Winbinder?svg=true&branch=php8) PHP 8 x64
+[![Build status](https://ci.appveyor.com/api/projects/status/github/Bearsampp/Winbinder-PHP8?svg=true&branch=main)](https://ci.appveyor.com/project/Bear/winbinder-php8) PHP 8.3.15 x64
 
 What is WinBinder?
 ==================
@@ -20,26 +20,26 @@ PHP Build Compatibility
 =======================
 
 - PHP 7.* ❌ (unsupported)
-- PHP 8.3 ✅
+- PHP 8.3.15 ✅
 
 (For older PHP version compatibility please see PECL website for old .dll's)
 
 Latest Features & Updates
 =========================
 
-[Wiki - New features!](https://github.com/crispy-computing-machine/Winbinder/wiki/New-Features-Functions)
+[Wiki - New features!](https://github.com/Bearsampp/Winbinder-PHP8/wiki/New-Features-Functions)
 
 Reporting Bugs
 ==============
 
-Report them via github [issues](https://github.com/crispy-computing-machine/Winbinder/issues).
+Report them via github [issues](https://github.com/Bearsampp/Winbinder-PHP8/issues).
 
 About
 =====
 
 Forked from [Wagy](https://github.com/wagy/WinBinder) for PHP7 support
 
-**Updated for PHP 8 compatibility - I have no idea what I am doing, but it seems to work!**
+**Updated for PHP 8.3 compatibility.**
 
 # ⚠️ DO NOT USE IN PRODUCTION!
 

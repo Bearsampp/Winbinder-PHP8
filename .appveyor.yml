@@ -44,7 +44,7 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       ARCH: x64
       VC: vs16
-      PHP_VER: 8.3.23
+      PHP_VER: 8.3.15
       TS: 1
 
 build_script:
@@ -53,12 +53,17 @@ build_script:
     $ts_part = ''
     if ('0' -eq $env:TS) { $ts_part = '-nts' }
     $bname = 'php-devel-pack-' + $env:PHP_VER + $ts_part + '-Win32-' + $env:VC.toUpper() + '-' + $env:ARCH + '.zip'
-    echo "Download PHP8 development pack from release https://windows.php.net/downloads/releases/$bname"
+    $url_releases = "https://windows.php.net/downloads/releases/$bname"
+    $url_archives = "https://windows.php.net/downloads/releases/archives/$bname"
+
+    echo "Download PHP development pack from $url_releases"
     if (-not (Test-Path c:\build-cache\$bname)) {
-            Invoke-WebRequest "https://windows.php.net/downloads/releases/$bname" -OutFile "c:\build-cache\$bname" -UserAgent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0'
-            if (-not (Test-Path c:\build-cache\$bname)) {
-                    Invoke-WebRequest "https://windows.php.net/downloads/releases/$bname" -OutFile "c:\build-cache\$bname" -UserAgent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0'
-            }
+        try {
+            Invoke-WebRequest $url_releases -OutFile "c:\build-cache\$bname" -UserAgent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0'
+        } catch {
+            echo "Failed to download from releases, trying archives..."
+            Invoke-WebRequest $url_archives -OutFile "c:\build-cache\$bname" -UserAgent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0'
+        }
     }
 
     $dname0 = 'php-' + $env:PHP_VER + '-devel-' + $env:VC.toUpper() + '-' + $env:ARCH
