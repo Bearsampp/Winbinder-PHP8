@@ -118,7 +118,7 @@ test_script:
 
 deploy:
   - provider: GitHub
-    auth_token: $(GH_PAT)
+    auth_token: $(GH_PAT) # Ensure GH_PAT is set in AppVeyor environment variables
     artifact: /.*\.zip/
     draft: false
     prerelease: false
