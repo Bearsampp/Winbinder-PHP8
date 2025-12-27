@@ -27,7 +27,7 @@
 #define FILE_NAME "php_winbinder.dll"
 
 //#include "winres.h"
-#include "wb_version.h"
+#include "wb/wb_version.h"
 #include "winver.h"				// Rubem feb 16, 2006
 #include "winnt.h"				// Rubem feb 16, 2006
 
@@ -82,4 +82,3 @@ END
 #ifdef MC_INCLUDE
 #include MC_INCLUDE
 #endif
-
