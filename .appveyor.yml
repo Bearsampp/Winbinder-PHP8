@@ -38,22 +38,22 @@ environment:
   BIN_SDK_VER: 2.3.0
   PTHREADS_VER: 2.9.1
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       ARCH: x64
       VC: vs16
       PHP_VER: 8.3.15
       TS: 1
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       ARCH: x64
       VC: vs16
       PHP_VER: 8.3.15
       TS: 0
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       ARCH: x86
       VC: vs16
       PHP_VER: 8.3.15
       TS: 1
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
       ARCH: x86
       VC: vs16
       PHP_VER: 8.3.15
@@ -136,6 +136,7 @@ deploy:
     artifact: /.*\.zip/
     draft: false
     prerelease: false
+    force_update: true
     release: "php_winbinder-${PHP_VER}"
     tag: "php_winbinder-${PHP_VER}"
     on:
