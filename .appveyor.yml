@@ -15,27 +15,19 @@ install:
             mkdir c:\build-cache
     }
 
-    echo "Download PHP 8 binary tools"
-    $bname = 'php-sdk-binary-tools-php-sdk-' + $env:BIN_SDK_VER + '.zip'
-    $bpath = 'php-sdk-' + $env:BIN_SDK_VER
-    echo "Downloading: https://github.com/php/php-sdk-binary-tools/releases/download/$bpath/$bname"
-    if (-not (Test-Path c:\build-cache\$bname)) {
-            Invoke-WebRequest "https://github.com/php/php-sdk-binary-tools/releases/download/$bpath/$bname" -OutFile "c:\build-cache\$bname"
-    }
-    $dname0 = 'php-sdk-binary-tools-php-sdk-' + $env:BIN_SDK_VER
-    $dname1 = 'php-sdk-' + $env:BIN_SDK_VER
-    if (-not (Test-Path c:\build-cache\$dname1)) {
-            7z x c:\build-cache\$bname -oc:\build-cache
-            # Sleep 5 seconds (process cannot access the file)
-            Start-Sleep -s 5
-            move c:\build-cache\$dname0 c:\build-cache\$dname1
+    echo "Clone PHP SDK binary tools"
+    if (-not (Test-Path c:\build-cache\php-sdk)) {
+        git clone --depth=1 https://github.com/php/php-sdk-binary-tools.git c:\build-cache\php-sdk
+    } else {
+        cd c:\build-cache\php-sdk
+        git pull
+        cd c:\projects\winbinder
     }
 
 cache:
   c:\build-cache -> .appveyor.yml
 
 environment:
-  BIN_SDK_VER: 2.3.0
   PTHREADS_VER: 2.9.1
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
@@ -105,7 +97,7 @@ build_script:
     echo "if exist Makefile (nmake /nologo 2>&1) else (echo Makefile not found in %CD%)" | Out-File -Encoding "ASCII" -Append task.bat
     echo "exit %errorlevel%" | Out-File -Encoding "ASCII" -Append task.bat
     $here = (Get-Item -Path "." -Verbose).FullName
-    $runner = 'c:\build-cache\php-sdk-' + $env:BIN_SDK_VER + '\phpsdk.bat'
+    $runner = 'c:\build-cache\php-sdk\phpsdk.bat'
     $task = $here + '\task.bat'
     & $runner -c $env:VC -a $env:ARCH -t $task
 
