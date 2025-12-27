@@ -116,7 +116,7 @@ after_build:
     $ts_part = 'ts'
     if ('0' -eq $env:TS) { $ts_part = 'nts' }
     $zip_bname = 'php_winbinder-' + $env:APPVEYOR_REPO_COMMIT.substring(0, 8) + '-' + $env:PHP_VER.substring(0, 3) + '-' + $ts_part + '-' + $env:VC + '-' + $env:ARCH + '.zip'
-    $dir = 'c:\projects\winbinder\';
+    $dir = 'c:\projects\winbinder\' + $env:ARCH + '\';
     if ('1' -eq $env:TS) { 
         $dir = $dir + 'Release_TS' 
     } else {
