@@ -46,6 +46,21 @@ environment:
       VC: vs16
       PHP_VER: 8.3.15
       TS: 1
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      ARCH: x64
+      VC: vs16
+      PHP_VER: 8.3.15
+      TS: 0
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      ARCH: x86
+      VC: vs16
+      PHP_VER: 8.3.15
+      TS: 1
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      ARCH: x86
+      VC: vs16
+      PHP_VER: 8.3.15
+      TS: 0
 
 build_script:
   ps: |
@@ -102,12 +117,17 @@ after_build:
 
     echo "Build download archive of build extension and save as artifact..."
     $ts_part = 'ts'
-    if ('0' -eq $env:TS) { $ts_part = '-nts' }
+    if ('0' -eq $env:TS) { $ts_part = 'nts' }
     $zip_bname = 'php_winbinder-' + $env:APPVEYOR_REPO_COMMIT.substring(0, 8) + '-' + $env:PHP_VER.substring(0, 3) + '-' + $ts_part + '-' + $env:VC + '-' + $env:ARCH + '.zip'
     $dir = 'c:\projects\winbinder\';
-    if ('x64' -eq $env:ARCH) { $dir = $dir + 'x64\' }
-    $dir = $dir + 'Release'
-    if ('1' -eq $env:TS) { $dir = $dir + '_TS' }
+    if ('x64' -eq $env:ARCH) { 
+        $dir = $dir + 'x64\' 
+    }
+    if ('1' -eq $env:TS) { 
+        $dir = $dir + 'Release_TS' 
+    } else {
+        $dir = $dir + 'Release'
+    }
     & 7z a c:\$zip_bname $dir\php_winbinder.dll
     Push-AppveyorArtifact c:\$zip_bname
 
