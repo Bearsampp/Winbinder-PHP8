@@ -11,10 +11,8 @@
 
 // ZEND_END_ARG_INFO()
 
-#if PHP_VERSION_ID < 80000
+#if !defined(_IS_BOOL)
 #define _IS_BOOL IS_BOOL
-#else
-#define _IS_BOOL IS_BOOLEAN
 #endif
 
 ZEND_BEGIN_ARG_WITH_RETURN_TYPE_MASK_EX(arginfo_get_address, 0, 1, MAY_BE_LONG|MAY_BE_FALSE)
