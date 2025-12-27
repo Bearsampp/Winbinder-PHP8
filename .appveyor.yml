@@ -17,11 +17,11 @@ install:
 
     echo "Clone PHP SDK binary tools"
     if (-not (Test-Path c:\build-cache\php-sdk)) {
-        git clone --depth=1 https://github.com/php/php-sdk-binary-tools.git c:\build-cache\php-sdk
+        git clone --depth=1 https://github.com/php/php-sdk-binary-tools.git c:\build-cache\php-sdk 2>&1
     } else {
-        cd c:\build-cache\php-sdk
-        git pull
-        cd c:\projects\winbinder
+        pushd c:\build-cache\php-sdk
+        git pull 2>&1
+        popd
     }
 
 cache:
