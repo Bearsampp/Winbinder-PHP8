@@ -11,6 +11,11 @@ image: Visual Studio 2019
 
 install:
   ps: |
+    if (-not $env:GH_PAT) {
+        Write-Warning "GH_PAT environment variable is not set. Deployment will likely fail."
+    } else {
+        Write-Host "GH_PAT is set."
+    }
     echo "Build cache directory c:\build-cache"
     if (-not (Test-Path c:\build-cache)) {
             mkdir c:\build-cache
@@ -39,7 +44,7 @@ deploy:
     draft: false
     prerelease: false
     force_update: true
-    release: "php_winbinder-8.3.15"
-    tag: "php_winbinder-8.3.15"
+    release: WinBinder-8.3.15
+    tag: v8.3.15
     on:
       branch: main
