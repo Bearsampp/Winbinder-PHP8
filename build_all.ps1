@@ -93,17 +93,17 @@ foreach ($arch in $archs) {
 
         # 5. Package and Save Artifact
         $ts_label = if ($ts -eq "1") { "ts" } else { "nts" }
-        $zipName = "php_winbinder-$($env:APPVEYOR_REPO_COMMIT.substring(0, 8))-$($PhpVersion.substring(0, 3))-$ts_label-$VcVersion-$arch.zip"
-        
+        $zipName = "php-winbinder-$PhpVersion-$arch-$ts_label.7z"
+
         $outputDir = if ($arch -eq "x64") { "$projectRoot\x64" } else { $projectRoot }
         $releaseFolder = if ($ts -eq "1") { "Release_TS" } else { "Release" }
         $outputDir = Join-Path $outputDir $releaseFolder
-        
+
         $dllPath = Join-Path $outputDir "php_winbinder.dll"
-        
+
         if (Test-Path $dllPath) {
             Write-Host "DLL found at $dllPath. Creating archive $zipName..."
-            & 7z a "$buildCache\$zipName" $dllPath | Out-Null
+            & 7z a "$buildCache\$zipName" $dllPath -t7z | Out-Null
             Push-AppveyorArtifact "$buildCache\$zipName"
         } else {
             Write-Error "Error: DLL not found at $dllPath"
@@ -112,7 +112,6 @@ foreach ($arch in $archs) {
         # Cleanup for next variant
         $env:PATH = $oldPath
         Remove-Item $taskFile -ErrorAction SilentlyContinue
-        if (Test-Path "Makefile") { nmake clean /nologo | Out-Null }
         Get-ChildItem -Path $projectRoot -Include "config.h", "config.nice.bat", "config.log", "config.status", "Makefile", "php_winbinder.res" -Recurse | Remove-Item -Force
         Get-ChildItem -Path $projectRoot -Include "*.obj", "*.pdb", "*.exp", "*.lib" -Recurse | Remove-Item -Force
         if (Test-Path "$projectRoot\x64") { Remove-Item -Recurse -Force "$projectRoot\x64" }
