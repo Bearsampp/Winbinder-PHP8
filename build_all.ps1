@@ -39,19 +39,40 @@ foreach ($arch in $archs) {
         $develDirName = "php-$PhpVersion$ts_part-devel-$VcVersion-$arch"
         $develDirPath = "$buildCache\$develDirName"
         
-        if (Test-Path $develDirPath) {
-            Remove-Item -Recurse -Force $develDirPath
+        # Clean up any potentially conflicting directories first
+        $possibleDirNames = @(
+            "php-$PhpVersion-devel-$VcVersion-$arch",
+            "php-$PhpVersion-nts-devel-$VcVersion-$arch"
+        )
+        
+        foreach ($pDir in $possibleDirNames) {
+            $pPath = "$buildCache\$pDir"
+            if (Test-Path $pPath) {
+                Remove-Item -Recurse -Force $pPath
+            }
         }
         
         Write-Host "Extracting $develPackName..."
         & 7z x $develPackPath "-o$buildCache" -y | Out-Null
 
-        if (-not (Test-Path $develDirPath)) {
-            Write-Host "Directory $develDirPath not found after extraction. Checking build cache content..."
-            Get-ChildItem $buildCache | ForEach-Object { Write-Host $_.FullName }
-            Write-Error "Error: Extracted directory $develDirPath not found."
+        # Find which directory was actually extracted
+        $foundDir = $null
+        foreach ($pDir in $possibleDirNames) {
+            $pPath = "$buildCache\$pDir"
+            if (Test-Path $pPath) {
+                $foundDir = $pPath
+                break
+            }
         }
 
+        if (-not $foundDir) {
+            Write-Host "Extracted directory not found. Checking build cache content..."
+            Get-ChildItem $buildCache | ForEach-Object { Write-Host $_.FullName }
+            Write-Error "Error: Extracted directory for $develPackName not found."
+        }
+
+        Write-Host "Using PHP development pack at: $foundDir"
+        $develDirPath = $foundDir
         $phpizePath = Join-Path $develDirPath "phpize.bat"
         if (-not (Test-Path $phpizePath)) {
             Write-Host "phpize.bat not found in $develDirPath. Checking directory content..."
