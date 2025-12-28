@@ -44,7 +44,20 @@ foreach ($arch in $archs) {
         }
         
         Write-Host "Extracting $develPackName..."
-        & 7z x $develPackPath -o$buildCache | Out-Null
+        & 7z x $develPackPath "-o$buildCache" -y | Out-Null
+
+        if (-not (Test-Path $develDirPath)) {
+            Write-Host "Directory $develDirPath not found after extraction. Checking build cache content..."
+            Get-ChildItem $buildCache | ForEach-Object { Write-Host $_.FullName }
+            Write-Error "Error: Extracted directory $develDirPath not found."
+        }
+
+        $phpizePath = Join-Path $develDirPath "phpize.bat"
+        if (-not (Test-Path $phpizePath)) {
+            Write-Host "phpize.bat not found in $develDirPath. Checking directory content..."
+            Get-ChildItem $develDirPath -Recurse | ForEach-Object { Write-Host $_.FullName }
+            Write-Error "Error: phpize.bat not found."
+        }
 
         # 3. Prepare Build Environment
         Set-Location $projectRoot
@@ -63,8 +76,8 @@ foreach ($arch in $archs) {
         
         @("cd $projectRoot",
           "set PATH=$develDirPath\bin;$develDirPath;%PATH%",
-          "call phpize 2>&1",
-          $conf_cmd,
+          "call `"$phpizePath`" 2>&1",
+          "if exist configure.bat (call configure.bat --with-winbinder=shared --disable-debug 2>&1) else (echo configure.bat not found & exit 1)",
           "nmake /nologo 2>&1",
           "exit %errorlevel%"
         ) | Out-File -Encoding "ASCII" $taskFile
