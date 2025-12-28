@@ -41,7 +41,7 @@ cache:
 
 build_script:
   ps: |
-    .\build_all.ps1 -PhpVersion "8.3.15" -VcVersion "vs16"
+    .\build_all.ps1 -PhpVersion "8.3.29" -VcVersion "vs16"
 
 deploy:
   - provider: GitHub
@@ -50,7 +50,7 @@ deploy:
     draft: false
     prerelease: false
     force_update: true
-    release: WinBinder-8.3.15
-    tag: v8.3.15
+    release: WinBinder-8.3.29
+    tag: v8.3.29
     on:
       branch: main
