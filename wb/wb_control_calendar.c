@@ -94,7 +94,7 @@ static LONG_PTR GetCorrectUtcUnixTime(void)
 
 static DWORD FileTimeToUnixTime(FILETIME *pfiletime)
 {
-	LONG_PTR t;
+	INT64 t;
 
 	t = pfiletime->dwHighDateTime;
 	t <<= 32;
@@ -114,9 +114,9 @@ static DWORD FileTimeToUnixTime(FILETIME *pfiletime)
 static FILETIME UnixTimeToFileTime(DWORD dwTime)
 {
 	FILETIME retf;
-	LONG_PTR ll;
+	INT64 ll;
 
-	ll = ((LONG_PTR)dwTime * 10000000LL);
+	ll = ((INT64)dwTime * 10000000LL);
 	ll += 116444736000000000LL;
 	retf.dwHighDateTime = (DWORD)(ll >> 32);
 	retf.dwLowDateTime = (DWORD)(ll & 0x00000000FFFFFFFF);

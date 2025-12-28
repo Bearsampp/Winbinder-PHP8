@@ -235,9 +235,9 @@ UINT64 MemCheck(const char *message, BOOL mb){
 	int ret = getrusage(RUSAGE_SELF,&r_usage);
 	if(ret == 0){
 		if(mb){
-			printf("%s Memory: %lldMB\n", message, (r_usage.ru_maxrss/1024));
+			printf("%s Memory: %lldMB\n", message, (long long)(r_usage.ru_maxrss/1024));
 		} else {
-			printf("%s Memory: %lldKB\n", message, r_usage.ru_maxrss);
+			printf("%s Memory: %lldKB\n", message, (long long)r_usage.ru_maxrss);
 		}
 	} else {
 		printf("MemCheck Error in getrusage. errno = %d\n", errno);

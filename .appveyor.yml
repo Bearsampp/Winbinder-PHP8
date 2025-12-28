@@ -16,7 +16,9 @@ install:
     
     if (-not $env:GH_PAT) {
         Write-Warning "GH_PAT environment variable is not set. Deployment will fail."
-        Write-Host "Please ensure GH_PAT is defined in AppVeyor project settings (Settings -> Environment -> Environment Variables)."
+        Write-Host "CRITICAL: You MUST define 'GH_PAT' in 'Settings -> Environment -> Environment variables'."
+        Write-Host "DO NOT set it in 'Settings -> Deployment' or 'Settings -> Environments' as those are different features."
+        Write-Host "1. Go to Project Settings`n2. Click 'Environment' on the left`n3. Click 'Add variable' in the 'Environment variables' section`n4. Name: GH_PAT`n5. Value: <your token>`n6. Click the lock icon`n7. Click 'Save' at the bottom"
     } else {
         Write-Host "GH_PAT is detected."
     }

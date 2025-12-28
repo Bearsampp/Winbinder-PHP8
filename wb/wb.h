@@ -518,6 +518,11 @@ PWBOBJ wbCreateToolbar(PWBOBJ pwboParent, PWBITEM pitem[], int nItems, int nBtnW
 BOOL wbCreateTreeViewImageList(PWBOBJ pwbo, HBITMAP hbmImage, int nImages, COLORREF clTransparent);
 //BOOL		wbDeleteTreeViewItem(PWBOBJ pwbo, HTREEITEM hItem);
 BOOL wbSetTreeViewItemImages(PWBOBJ pwbo, HTREEITEM hItem, int nImageIndex, int nSelectedImageIndex);
+HBITMAP wbCreateBitmap(int nWidth, int nHeight, BITMAPINFO *pbmi, void *pBits);
+HBITMAP wbResizeBitmap(HBITMAP hBitmap, int newWidth, int newHeight);
+HANDLE wbRotateBitmap(HANDLE hBitmap, float angle);
+DWORDLONG wbGetBitmapBits(HBITMAP hBitmap, BYTE **lplpBits, BOOL compress4to3);
+HBITMAP wbCreateMask(HBITMAP hBitmap, COLORREF clTransparent);
 BOOL wbSetTreeViewItemState(PWBOBJ pwbo, HTREEITEM hItem, BOOL bExpand);
 BOOL wbSetTreeViewItemText(PWBOBJ pwbo, HTREEITEM hItem, LPTSTR lpszItem);
 BOOL wbSetTreeViewItemValue(PWBOBJ pwbo, HTREEITEM hItem, int lParam);
