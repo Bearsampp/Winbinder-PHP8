@@ -118,6 +118,11 @@ build_script:
         exit 1
     }
 
+    if ($LASTEXITCODE -ne 0) {
+        echo "Build failed with exit code $LASTEXITCODE"
+        exit $LASTEXITCODE
+    }
+
 after_build:
   ps: |
 
