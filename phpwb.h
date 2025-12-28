@@ -46,6 +46,9 @@
 
 #include "wb/wb.h"
 #include <php.h>
+#ifdef PHP_BUILD_SYSTEM
+#undef PHP_BUILD_SYSTEM
+#endif
 #include <wbemidl.h>
 #include <windows.h>
 #pragma comment(lib, "kernel32.lib")

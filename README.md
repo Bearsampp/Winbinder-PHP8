@@ -45,6 +45,22 @@ Forked from [Wagy](https://github.com/wagy/WinBinder) for PHP7 support
 
 # ⚠️ No warranty provided!
 
+## AppVeyor Deployment Setup
+
+If you are forking this repository and want automated GitHub Releases to work, you **MUST** set up your GitHub Personal Access Token (PAT) in AppVeyor:
+
+1.  **Generate a GitHub PAT**: Go to your GitHub Settings -> Developer settings -> Personal access tokens (classic) and generate a token with the **`repo`** scope.
+2.  **Add to AppVeyor**: 
+    - Open your project in AppVeyor.
+    - Go to **Settings** -> **Environment**.
+    - Click **Add variable**.
+    - **Name**: `GH_PAT` (must be exactly this name).
+    - **Value**: Paste your GitHub token.
+    - Click the **lock icon** next to the value to encrypt it.
+    - Click **Save** at the bottom of the page.
+
+*Note: Do not set the token in the "Deployment" or "Environments" sections of AppVeyor, as they are used for different purposes.*
+
 ## Security and Trust
 
 When using the `php_winbinder.dll`, you might encounter a Windows "Unknown Publisher" warning. This occurs because the DLL is currently not digitally signed.
