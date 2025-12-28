@@ -130,14 +130,23 @@ after_build:
     $ts_part = 'ts'
     if ('0' -eq $env:TS) { $ts_part = 'nts' }
     $zip_bname = 'php_winbinder-' + $env:APPVEYOR_REPO_COMMIT.substring(0, 8) + '-' + $env:PHP_VER.substring(0, 3) + '-' + $ts_part + '-' + $env:VC + '-' + $env:ARCH + '.zip'
-    $dir = 'c:\projects\winbinder\' + $env:ARCH + '\';
+    $dir = 'c:\projects\winbinder\';
+    if ($env:ARCH -eq 'x64') {
+        $dir = $dir + 'x64\'
+    }
     if ('1' -eq $env:TS) { 
         $dir = $dir + 'Release_TS' 
     } else {
         $dir = $dir + 'Release'
     }
-    & 7z a c:\$zip_bname $dir\php_winbinder.dll
-    Push-AppveyorArtifact c:\$zip_bname
+    $dll_path = $dir + '\php_winbinder.dll'
+    if (Test-Path $dll_path) {
+        & 7z a c:\$zip_bname $dll_path
+        Push-AppveyorArtifact c:\$zip_bname
+    } else {
+        echo "Error: DLL not found at $dll_path"
+        exit 1
+    }
 
 test_script:
   ps: |
@@ -156,5 +165,3 @@ deploy:
     on:
       branch: main
       APPVEYOR_REPO_TAG: false
-      TS: 1
-      ARCH: x64
