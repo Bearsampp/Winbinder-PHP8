@@ -82,6 +82,11 @@ build_script:
     echo "Main build process..."
     cd c:\projects\winbinder
 
+    # Set VS16 directory explicitly to help phpsdk find it
+    if ($env:VC -eq "vs16") {
+        $env:PHP_SDK_VS16_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
+    }
+
     $env:PATH = 'c:\build-cache\' + $dname1 + '\bin;c:\build-cache\' + $dname1 + ';' + $env:PATH
     echo "" | Out-File -Encoding "ASCII" task.bat
     # Run phpize in the winbinder directory
@@ -98,6 +103,12 @@ build_script:
     echo "exit %errorlevel%" | Out-File -Encoding "ASCII" -Append task.bat
     $here = (Get-Item -Path "." -Verbose).FullName
     $runner = 'c:\build-cache\php-sdk\phpsdk-' + $env:VC + '-' + $env:ARCH + '.bat'
+    
+    # Check if we are on VS 2019 image and vs16 is requested
+    # If detection fails, we can try to help it by setting the path manually
+    # or using the starter with more arguments if needed.
+    # But first, let's try the variant-specific runner again with a small tweak.
+
     $task = $here + '\task.bat'
     if (Test-Path $runner) {
         & cmd /c "$runner -t $task"
