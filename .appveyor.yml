@@ -85,6 +85,7 @@ build_script:
     # Set VS16 directory explicitly to help phpsdk find it
     if ($env:VC -eq "vs16") {
         $env:PHP_SDK_VS16_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
+        $env:PHP_SDK_VC_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
     }
 
     $env:PATH = 'c:\build-cache\' + $dname1 + '\bin;c:\build-cache\' + $dname1 + ';' + $env:PATH
