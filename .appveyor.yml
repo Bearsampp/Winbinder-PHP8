@@ -143,13 +143,31 @@ after_build:
     if (Test-Path $dll_path) {
         & 7z a c:\$zip_bname $dll_path
         Push-AppveyorArtifact c:\$zip_bname
+        
+        # Set build variables for deployment using AppVeyor API to ensure they are visible to the deploy provider
+        $v_tag = "php_winbinder-$($env:PHP_VER)-$($env:ARCH)-$ts_part"
+        $v_title = "php_winbinder-$($env:PHP_VER)"
+        
+        Set-AppveyorBuildVariable "RELEASE_TAG" $v_tag
+        Set-AppveyorBuildVariable "RELEASE_TITLE" $v_title
+        
+        echo "Prepared deployment variables: Tag=$v_tag, Title=$v_title"
     } else {
         echo "Error: DLL not found at $dll_path"
         exit 1
     }
 
-# Only deploy from one designated job to avoid race conditions.
-# This "lead" job will automatically include artifacts from all other jobs in the same build.
+# Stagger deployments to avoid race conditions and GitHub API rate limits/conflicts
+before_deploy:
+  ps: |
+    if ($env:ARCH -eq "x86") {
+        if ($env:TS -eq "1") { Start-Sleep -s 30 } else { Start-Sleep -s 60 }
+    } elseif ($env:ARCH -eq "x64") {
+        if ($env:TS -eq "0") { Start-Sleep -s 90 }
+    }
+    # x64 TS (TS=1) has 0 delay
+
+# Deploy each variant to its own unique tag to avoid race conditions and 401 errors.
 deploy:
   - provider: GitHub
     auth_token: $(GH_PAT)
@@ -157,9 +175,7 @@ deploy:
     draft: false
     prerelease: false
     force_update: true
-    release: "php_winbinder-${PHP_VER}"
-    tag: "php_winbinder-${PHP_VER}"
+    release: $(RELEASE_TITLE)
+    tag: $(RELEASE_TAG)
     on:
       branch: main
-      ARCH: x64
-      TS: 1
