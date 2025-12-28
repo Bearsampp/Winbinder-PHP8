@@ -155,3 +155,6 @@ deploy:
     tag: "php_winbinder-${PHP_VER}"
     on:
       branch: main
+      APPVEYOR_REPO_TAG: false
+      TS: 1
+      ARCH: x64
