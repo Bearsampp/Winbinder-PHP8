@@ -30,22 +30,22 @@ cache:
 environment:
   PTHREADS_VER: 2.9.1
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       ARCH: x64
       VC: vs16
       PHP_VER: 8.3.15
       TS: 1
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       ARCH: x64
       VC: vs16
       PHP_VER: 8.3.15
       TS: 0
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       ARCH: x86
       VC: vs16
       PHP_VER: 8.3.15
       TS: 1
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       ARCH: x86
       VC: vs16
       PHP_VER: 8.3.15
@@ -97,10 +97,10 @@ build_script:
     echo "if exist Makefile (nmake /nologo 2>&1) else (echo Makefile not found in %CD%)" | Out-File -Encoding "ASCII" -Append task.bat
     echo "exit %errorlevel%" | Out-File -Encoding "ASCII" -Append task.bat
     $here = (Get-Item -Path "." -Verbose).FullName
-    $runner = 'c:\build-cache\php-sdk\phpsdk-starter.bat'
+    $runner = 'c:\build-cache\php-sdk\phpsdk-' + $env:VC + '-' + $env:ARCH + '.bat'
     $task = $here + '\task.bat'
     if (Test-Path $runner) {
-        & cmd /c "$runner -c $env:VC -a $env:ARCH -t $task"
+        & cmd /c "$runner -t $task"
     } else {
         echo "Error: $runner not found!"
         exit 1
