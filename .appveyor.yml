@@ -12,9 +12,10 @@ image: Visual Studio 2019
 install:
   ps: |
     if (-not $env:GH_PAT) {
-        Write-Warning "GH_PAT environment variable is not set. Deployment will likely fail."
+        Write-Warning "GH_PAT environment variable is not set. Deployment will fail."
+        Write-Host "Please ensure GH_PAT is defined in AppVeyor project settings (Settings -> Environment -> Environment Variables)."
     } else {
-        Write-Host "GH_PAT is set."
+        Write-Host "GH_PAT is detected."
     }
     echo "Build cache directory c:\build-cache"
     if (-not (Test-Path c:\build-cache)) {
@@ -48,3 +49,4 @@ deploy:
     tag: v8.3.15
     on:
       branch: main
+      GH_PAT: /.+/
