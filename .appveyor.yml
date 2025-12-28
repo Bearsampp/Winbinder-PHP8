@@ -148,13 +148,8 @@ after_build:
         exit 1
     }
 
-before_deploy:
-  - ps: |
-      # To avoid the 401/Conflict race condition, we will use a different tag for each variant.
-      # This ensures each job creates its OWN unique release on GitHub.
-      # The artifacts will still be available individually.
-      $env:VAR_TAG = "php_winbinder-${env:PHP_VER}-${env:ARCH}-${ts_part}"
-
+# Only deploy from one designated job to avoid race conditions.
+# This "lead" job will automatically include artifacts from all other jobs in the same build.
 deploy:
   - provider: GitHub
     auth_token: $(GH_PAT)
@@ -162,7 +157,9 @@ deploy:
     draft: false
     prerelease: false
     force_update: true
-    release: "php_winbinder-${PHP_VER} (${env:ARCH} ${ts_part})"
-    tag: $(VAR_TAG)
+    release: "php_winbinder-${PHP_VER}"
+    tag: "php_winbinder-${PHP_VER}"
     on:
       branch: main
+      ARCH: x64
+      TS: 1
