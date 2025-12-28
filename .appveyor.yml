@@ -5,7 +5,7 @@ branches:
   only:
     - main
 
-clone_folder:  c:\projects\winbinder
+clone_folder:  c:\projects\php_winbinder
 
 image: Visual Studio 2019
 

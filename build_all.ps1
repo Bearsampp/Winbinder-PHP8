@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 $archs = @("x64", "x86")
 $ts_options = @("1", "0")
 
-$projectRoot = "c:\projects\winbinder"
+$projectRoot = "c:\projects\php_winbinder"
 $buildCache = "c:\build-cache"
 
 foreach ($arch in $archs) {
