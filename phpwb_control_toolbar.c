@@ -24,7 +24,7 @@ ZEND_FUNCTION(wb_create_toolbar)
 	HANDLE hImage = NULL;
 	LONG_PTR l;
 	zend_long pwboParent, width = 0, height = 0;
-	char *s = "";
+	char *s = NULL;
 	PWBITEM *pitem;
 	TCHAR *wcs = 0;
 	zend_bool width_isnull, height_isnull;

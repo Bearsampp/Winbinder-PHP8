@@ -20,10 +20,10 @@
 ZEND_FUNCTION(wb_sys_dlg_open)
 {
 	zend_long pwboParent = (LONG_PTR)NULL;
-	char *title = "", *filter = "", *path = "";
+	char *title = NULL, *filter = NULL, *path = NULL;
 	size_t title_len = 0, filter_len = 0, path_len = 0;
 	int fileCount = 0;
-	zend_long style;
+	zend_long style = 0;
 	TCHAR szFile[MAX_PATH_BUFFER] = {0};
 	TCHAR szDir[MAX_PATH] = {0};
 
@@ -92,7 +92,7 @@ ZEND_FUNCTION(wb_sys_dlg_open)
 ZEND_FUNCTION(wb_sys_dlg_save)
 {
 	zend_long pwboParent = (LONG_PTR)NULL;
-	char *title = "", *filter = "", *path = "", *file = "", *defext = "";
+	char *title = NULL, *filter = NULL, *path = NULL, *file = NULL, *defext = NULL;
 	size_t title_len = 0, filter_len = 0, path_len = 0, file_len = 0, defext_len = 0;
 	TCHAR szFile[MAX_PATH] = TEXT("");
 	TCHAR *szDefExt = 0;
@@ -115,11 +115,11 @@ ZEND_FUNCTION(wb_sys_dlg_save)
 	if (pwboParent && !wbIsWBObj((void *)pwboParent, TRUE)){
 		RETURN_NULL();
 	}
-	if (*file){
+	if (file && *file){
 		Utf82WideCharCopy(file, file_len, szFile, MAX_PATH);
 	}
 
-	if (*defext){
+	if (defext && *defext){
 		//		strcpy(szDefExt, defext);
 		szDefExt = Utf82WideChar(defext, defext_len);
 	}
@@ -144,7 +144,7 @@ ZEND_FUNCTION(wb_sys_dlg_save)
 ZEND_FUNCTION(wb_sys_dlg_path)
 {
 	zend_long pwboParent = (LONG_PTR)NULL;
-	char *title = "", *path = "";
+	char *title = NULL, *path = NULL;
 	size_t title_len = 0, path_len = 0;
 	TCHAR szSelPath[MAX_PATH] = TEXT("");
 
@@ -183,7 +183,7 @@ ZEND_FUNCTION(wb_sys_dlg_color)
 {
 	zend_long pwboParent = (LONG_PTR)NULL;
 	zend_long color = NOCOLOR;
-	char *title = "";
+	char *title = NULL;
 	size_t title_len = 0;
 	TCHAR *szTitle = 0;
 	zend_bool color_isnull;
@@ -206,8 +206,8 @@ ZEND_FUNCTION(wb_sys_dlg_color)
 ZEND_FUNCTION(wb_sys_dlg_font)
 {
 	LONG_PTR pwbparent = (LONG_PTR)NULL;
-	char *title = "";
-	char *name = "";
+	char *title = NULL;
+	char *name = NULL;
 	zend_long height = 12, color = 0, flags = 0;
 	size_t title_len = 0, name_len = 0;
 	int font = 0;

@@ -214,7 +214,7 @@ ZEND_FUNCTION(wb_create_mask)
 ZEND_FUNCTION(wb_screenshot)
 {
     char *filename = NULL;
-    size_t filename_len;
+    size_t filename_len = 0;
     wchar_t* wstr = NULL;
 
     ZEND_PARSE_PARAMETERS_START(0, 1)

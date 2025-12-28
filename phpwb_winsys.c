@@ -185,8 +185,8 @@ ZEND_FUNCTION(wb_destroy_media)
 
 ZEND_FUNCTION(wb_play_sound)
 {
-	size_t cmd_len;
-	char *cmd = "";
+	size_t cmd_len = 0;
+	char *cmd = NULL;
 	zval *source;
 
 	TCHAR *szPath = 0;
@@ -247,9 +247,8 @@ ZEND_FUNCTION(wb_play_sound)
 
 ZEND_FUNCTION(wb_stop_sound)
 {
-	size_t cmd_len;
-	char *cmd = "";
-
+	size_t cmd_len = 0;
+	char *cmd = NULL;
 	TCHAR *wcs = 0;
 
 	// if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|s", &cmd, &cmd_len) == FAILURE)
@@ -314,9 +313,9 @@ ZEND_FUNCTION(wb_message_box)
 
 ZEND_FUNCTION(wb_exec)
 {
-	char *pgm, *parm = NULL;
-	size_t pgm_len, parm_len = 0;
-	zend_bool show;
+	char *pgm = NULL, *parm = NULL;
+	size_t pgm_len = 0, parm_len = 0;
+	zend_bool show = 0;
 	TCHAR *szPgm = 0;
 	TCHAR *szParm = 0;
 	zend_bool show_isnull = TRUE;
@@ -348,8 +347,8 @@ ZEND_FUNCTION(wb_is_running)
 
 ZEND_FUNCTION(wb_get_system_info)
 {
-	char *s;
-	size_t s_len;
+	char *s = NULL;
+	size_t s_len = 0;
 	BOOL isstr;
 	LONG_PTR res;
 	char strval[1024];
@@ -445,7 +444,7 @@ NOTE: maximum string is 1024 characters
 ZEND_FUNCTION(wb_get_registry_key)
 {
 	char *key, *subkey, *entry = NULL;
-	size_t key_len, subkey_len, entry_len;
+	size_t key_len, subkey_len, entry_len = 0;
 	int buflen = 1024;
 	char sval[1024];
 	TCHAR szVal[1024];
@@ -487,8 +486,8 @@ ZEND_FUNCTION(wb_get_registry_key)
 
 ZEND_FUNCTION(wb_set_registry_key)
 {
-	char *key, *subkey, *entry;
-	size_t key_len, subkey_len, entry_len;
+	char *key, *subkey, *entry = NULL;
+	size_t key_len, subkey_len, entry_len = 0;
 	zval *source = NULL;
 
 	TCHAR *szKey = 0;

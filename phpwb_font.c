@@ -112,8 +112,8 @@ ZEND_FUNCTION(wb_set_font)
 
 ZEND_FUNCTION(wb_get_ttf_info)
 {
-	char *file;
-	size_t file_size;
+	char *file = NULL;
+	size_t file_size = 0;
 	php_stream *fhnd = NULL;
 	char real_path[MAXPATHLEN];
 
