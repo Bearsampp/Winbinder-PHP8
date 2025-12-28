@@ -7,7 +7,7 @@ branches:
 
 clone_folder:  c:\projects\winbinder
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 install:
   ps: |
@@ -41,7 +41,7 @@ cache:
 
 build_script:
   ps: |
-    .\build_all.ps1 -PhpVersion "8.3.29" -VcVersion "vs16"
+    .\build_all.ps1 -PhpVersion "8.4.16" -VcVersion "vs17"
 
 deploy:
   - provider: GitHub
@@ -50,7 +50,7 @@ deploy:
     draft: false
     prerelease: false
     force_update: true
-    release: WinBinder-8.3.29
-    tag: v8.3.29
+    release: WinBinder-8.4.16
+    tag: v8.4.16
     on:
       branch: main

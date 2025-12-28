@@ -1,6 +1,6 @@
 param(
-    [string]$PhpVersion = "8.3.29",
-    [string]$VcVersion = "vs16"
+    [string]$PhpVersion = "8.4.16",
+    [string]$VcVersion = "vs17"
 )
 
 $ErrorActionPreference = "Stop"
@@ -83,9 +83,14 @@ foreach ($arch in $archs) {
         # 3. Prepare Build Environment
         Set-Location $projectRoot
         
-        # Explicitly set VS path for PHP SDK
-        $env:PHP_SDK_VS16_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
-        $env:PHP_SDK_VC_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
+        # Explicitly set VS path for PHP SDK (VS 2022 for vs17, VS 2019 for vs16)
+        if ($VcVersion -eq "vs17") {
+            $env:PHP_SDK_VS17_DIR = "C:\Program Files\Microsoft Visual Studio\2022\Community"
+            $env:PHP_SDK_VC_DIR = "C:\Program Files\Microsoft Visual Studio\2022\Community"
+        } else {
+            $env:PHP_SDK_VS16_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
+            $env:PHP_SDK_VC_DIR = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community"
+        }
         
         # Update PATH
         $oldPath = $env:PATH
