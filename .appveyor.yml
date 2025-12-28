@@ -17,10 +17,10 @@ install:
 
     echo "Clone PHP SDK binary tools"
     if (-not (Test-Path c:\build-cache\php-sdk)) {
-        git clone --quiet --depth=1 https://github.com/php/php-sdk-binary-tools.git c:\build-cache\php-sdk
+        git clone --quiet --depth=1 https://github.com/php/php-sdk-binary-tools.git c:\build-cache\php-sdk 2>$null
     } else {
         pushd c:\build-cache\php-sdk
-        git pull --quiet
+        git pull --quiet 2>$null
         popd
     }
 
@@ -99,7 +99,12 @@ build_script:
     $here = (Get-Item -Path "." -Verbose).FullName
     $runner = 'c:\build-cache\php-sdk\phpsdk.bat'
     $task = $here + '\task.bat'
-    & $runner -c $env:VC -a $env:ARCH -t $task
+    if (Test-Path $runner) {
+        & cmd /c "$runner -c $env:VC -a $env:ARCH -t $task"
+    } else {
+        echo "Error: $runner not found!"
+        exit 1
+    }
 
 after_build:
   ps: |
