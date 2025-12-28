@@ -148,6 +148,16 @@ after_build:
         exit 1
     }
 
+before_deploy:
+  - ps: |
+      # Space out deployments to avoid GitHub API race conditions
+      if ($env:ARCH -eq "x86") {
+          if ($env:TS -eq "1") { Start-Sleep -s 10 } else { Start-Sleep -s 20 }
+      } elseif ($env:ARCH -eq "x64") {
+          if ($env:TS -eq "0") { Start-Sleep -s 30 }
+      }
+      # x64 TS (TS=1) goes first (0 delay)
+
 deploy:
   - provider: GitHub
     auth_token: $(GH_PAT)
@@ -159,44 +169,3 @@ deploy:
     tag: "php_winbinder-${PHP_VER}"
     on:
       branch: main
-      ARCH: x64
-      TS: 1
-
-  - provider: GitHub
-    auth_token: $(GH_PAT)
-    artifact: /.*\.zip/
-    draft: false
-    prerelease: false
-    force_update: true
-    release: "php_winbinder-${PHP_VER}"
-    tag: "php_winbinder-${PHP_VER}"
-    on:
-      branch: main
-      ARCH: x64
-      TS: 0
-
-  - provider: GitHub
-    auth_token: $(GH_PAT)
-    artifact: /.*\.zip/
-    draft: false
-    prerelease: false
-    force_update: true
-    release: "php_winbinder-${PHP_VER}"
-    tag: "php_winbinder-${PHP_VER}"
-    on:
-      branch: main
-      ARCH: x86
-      TS: 1
-
-  - provider: GitHub
-    auth_token: $(GH_PAT)
-    artifact: /.*\.zip/
-    draft: false
-    prerelease: false
-    force_update: true
-    release: "php_winbinder-${PHP_VER}"
-    tag: "php_winbinder-${PHP_VER}"
-    on:
-      branch: main
-      ARCH: x86
-      TS: 0
