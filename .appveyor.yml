@@ -150,13 +150,10 @@ after_build:
 
 before_deploy:
   - ps: |
-      # Space out deployments to avoid GitHub API race conditions
-      if ($env:ARCH -eq "x86") {
-          if ($env:TS -eq "1") { Start-Sleep -s 10 } else { Start-Sleep -s 20 }
-      } elseif ($env:ARCH -eq "x64") {
-          if ($env:TS -eq "0") { Start-Sleep -s 30 }
-      }
-      # x64 TS (TS=1) goes first (0 delay)
+      # To avoid the 401/Conflict race condition, we will use a different tag for each variant.
+      # This ensures each job creates its OWN unique release on GitHub.
+      # The artifacts will still be available individually.
+      $env:VAR_TAG = "php_winbinder-${env:PHP_VER}-${env:ARCH}-${ts_part}"
 
 deploy:
   - provider: GitHub
@@ -165,7 +162,7 @@ deploy:
     draft: false
     prerelease: false
     force_update: true
-    release: "php_winbinder-${PHP_VER}"
-    tag: "php_winbinder-${PHP_VER}"
+    release: "php_winbinder-${PHP_VER} (${env:ARCH} ${ts_part})"
+    tag: $(VAR_TAG)
     on:
       branch: main
